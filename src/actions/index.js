@@ -21,13 +21,16 @@ export const signOut = () => {
   };
 };
 
-export const createStream = formValues => async dispatch => {
-  const res = await streams.post('/streams', formValues);
+export const createStream = formValues => async (dispatch, getState) => {
+  const { userId } = getState().auth; // const userId = getState().auth.userId
+  const res = await streams.post('/streams', { ...formValues, userId });
   dispatch({ type: CREATE_STREAM, payload: res.data });
+  // Do programmatic navigation here!!!
+  
 };
 
 export const fetchStreams = () => async dispatch => {
-  const res = await streams.get('/stream');
+  const res = await streams.get('/streams');
   dispatch({ type: FETCH_STREAMS, payload: res.data });
 };
 
